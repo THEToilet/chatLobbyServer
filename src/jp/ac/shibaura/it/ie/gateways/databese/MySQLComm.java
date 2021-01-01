@@ -36,7 +36,7 @@ public class MySQLComm {
         return this.conn;
     }
 
-    public int sqlExecuteUpdate(String sql){
+    public boolean sqlExecuteUpdate(String sql){
         int result = 0;
         try {
             System.out.println(sql);
@@ -44,8 +44,9 @@ public class MySQLComm {
             result = st.executeUpdate(sql);
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return result;
+        return true;
     }
 
     public ResultSet sqlExecuteQuery(String sql){

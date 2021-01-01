@@ -15,7 +15,6 @@ public class SessionInteractor implements SessionUseCase {
 
     @Override
     public SessionOutputData handle(SessionInputData inputData) {
-
-        return new SessionOutputData(sessionRepository.find(inputData.getSession()) == null?true:false);
+        return new SessionOutputData(sessionRepository.find(inputData.getSession()).isPresent());
     }
 }

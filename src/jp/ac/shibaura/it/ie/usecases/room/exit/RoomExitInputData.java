@@ -5,12 +5,10 @@ import jp.ac.shibaura.it.ie.usecases.core.InputData;
 
 public class RoomExitInputData implements InputData<RoomExitOutputData> {
     private final String session;
-    private final String userId;
     private final String roomId;
 
-    public RoomExitInputData(String session, String userId, String roomId) {
+    public RoomExitInputData(String session, String roomId) {
         this.session = session;
-        this.userId = userId;
         this.roomId = roomId;
     }
 
@@ -22,7 +20,4 @@ public class RoomExitInputData implements InputData<RoomExitOutputData> {
         return session;
     }
 
-    public String getUserId() {
-        return userId;
-    }
 }

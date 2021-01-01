@@ -1,33 +1,46 @@
 package jp.ac.shibaura.it.ie.domain.model.room;
 
-import jp.ac.shibaura.it.ie.domain.model.user.User;
-import com.google.inject.Inject;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Room {
-    private List<User> users = new ArrayList<>(4);
-    private String id;
+    private List<String> users = new ArrayList<>(4);
+    private String roomId;
     private String categoryId;
+    private long creationTime;
 
-    @Inject
+    @Autowired
     RoomRepository roomRepository;
 
-    public Room(String id, String categoryId){
-        this.id = id;
+    public Room(String roomId, String categoryId){
+        this.roomId = roomId;
         this.categoryId = categoryId;
     }
 
-    public String getId() {
-        return id;
+    public String getRoomId() {
+        return this.roomId;
     }
 
-    public void joinRoom(User user){
-        users.add(user);
+    public String getCategoryId(){
+        return this.categoryId;
     }
-    public void exitRoom(User user){
-        users.remove(user);
+
+    public int getNumberOfUser(){
+       return users.size();
+    }
+    public int getMaxNumberOfUser(){
+        return 4;
+    }
+
+    public void joinRoom(String session){
+        users.add(session);
+    }
+    public void exitRoom(String session){
+        users.remove(session);
     }
 
 }

@@ -11,7 +11,7 @@ import jp.ac.shibaura.it.ie.usecases.category.join.CategoryJoinUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class CategoryJoinInteractor implements CategoryJoinUseCase {
@@ -28,16 +28,21 @@ public class CategoryJoinInteractor implements CategoryJoinUseCase {
     @Override
     public CategoryJoinOutputData handle(CategoryJoinInputData inputData) {
         String uuid;
-        Room room = roomRepository.find(inputData.getCategoryId());
-        // 未完成グループがなかったら
-        if(room == null){
-            uuid = UUID.randomUUID().toString();
-            room = new Room(uuid, inputData.getCategoryId());
-            roomRepository.save(room);
+        List<Room> rooms = roomRepository.findAll(inputData.getCategoryId());
+        // ルームが存在する場合
+        if (rooms.size() > 0) {
+            // カテゴリーのユーザ数でソート
+            Collections.sort(rooms, Comparator.comparing(room -> room.getNumberOfUser()));
+            Room room = rooms.get(rooms.size() - 1);
+            room.joinRoom(inputData.getSession());
+            uuid = room.getRoomId();
         }
-        else{
-            room.joinRoom(userRepository.find(sessionRepository.find(inputData.getUserId())).get());
-            uuid = room.getId();
+        // ルームが存在しない場合
+        else {
+            uuid = UUID.randomUUID().toString();
+            Room room = new Room(uuid, inputData.getCategoryId());
+            room.joinRoom(inputData.getSession());
+            roomRepository.save(room);
         }
 
         return new CategoryJoinOutputData(uuid);

@@ -5,23 +5,24 @@ import jp.ac.shibaura.it.ie.domain.model.session.SessionRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 @Component
 public class InMemorySessionRepository implements SessionRepository {
     private HashMap<String, String> sessions = new HashMap<>();
     @Override
-    public void save(String userId, String session) {
-        sessions.put(userId,session);
+    public void save(String session, String userId) {
+        sessions.put(session,userId);
     }
 
     @Override
-    public void remove(String userId) {
-        sessions.remove(userId);
+    public void remove(String session) {
+        sessions.remove(session);
     }
 
     @Override
-    public String find(String userId) {
-        return sessions.get(userId);
+    public Optional<String> find(String session) {
+        return Optional.of(sessions.get(session));
     }
 
 }

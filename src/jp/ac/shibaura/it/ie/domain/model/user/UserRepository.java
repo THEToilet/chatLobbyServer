@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
-    public void save(User user);
+    public boolean save(User user);
     public void update(User user);
     public List<User> findAll();
     public Optional<User> find(String userId);

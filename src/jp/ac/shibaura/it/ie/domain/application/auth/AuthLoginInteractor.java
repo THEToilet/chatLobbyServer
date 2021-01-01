@@ -19,7 +19,7 @@ public class AuthLoginInteractor implements AuthLoginUseCase {
     @Override
     public AuthLoginOutputData handle(AuthLoginInputData inputData) {
         String uuid = UUID.randomUUID().toString();
-        sessionRepository.save(inputData.getId(), uuid);
+        sessionRepository.save(uuid, inputData.getId());
         return new AuthLoginOutputData(uuid);
     }
 }

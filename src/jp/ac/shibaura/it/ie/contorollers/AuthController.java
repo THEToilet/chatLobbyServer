@@ -55,11 +55,10 @@ public class AuthController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     @ResponseBody
-    public OutputData logout(@RequestHeader("session") String session, @RequestBody AuthLogoutInputData inputData) {
-        if(sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
-            logger.info("fdf");
+    public OutputData logout(@RequestHeader("session") String session) {
+        if(!sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
             throw  new RuntimeException();
         }
-        return authLogoutInteractor.handle(inputData);
+        return authLogoutInteractor.handle(new AuthLogoutInputData(session));
     }
 }

@@ -16,11 +16,11 @@ public class MySQLUserRepository implements UserRepository {
     @Autowired
     private LogUtils logger;
     @Override
-    public void save(User user) {
+    public boolean save(User user) {
         MySQLComm comm = MySQLComm.getInstance();
         logger.info(String.format("insert into user(id, name, password) values (%s,%s,%s);", user.getId().getValue(), user.getName().getValue(), user.getPass().getValue()));
         //comm.sqlExecuteUpdate(String.format("insert into user(id, name, password) values (%s,%s,%s);", user.getId().getValue(), user.getName().getValue(), user.getPass().getValue()));
-        comm.sqlExecuteUpdate(String.format("insert into user(id, name, password) values (22,'%s','%s');", user.getName().getValue(), user.getPass().getValue()));
+        return comm.sqlExecuteUpdate(String.format("insert into user(id, name, password) values (22,'%s','%s');", user.getName().getValue(), user.getPass().getValue()));
     }
 
     @Override

@@ -16,7 +16,7 @@ public class AuthLogoutInteractor implements AuthLogoutUseCase {
 
     @Override
     public AuthLogoutOutputData handle(AuthLogoutInputData inputData) {
-        sessionRepository.remove(inputData.getId());
+        sessionRepository.remove(inputData.getSession());
         return new AuthLogoutOutputData(true);
     }
 }

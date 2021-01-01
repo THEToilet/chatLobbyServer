@@ -10,21 +10,20 @@ import jp.ac.shibaura.it.ie.usecases.room.exit.RoomExitUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
 public class RoomExitInteractor implements RoomExitUseCase {
     @Autowired
     private RoomRepository roomRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     @Override
     public RoomExitOutputData handle(RoomExitInputData inputData) {
 
-        Room room = roomRepository.find(inputData.getRoomId());
-        room.exitRoom(userRepository.find(inputData.getUserId()).get());
+        Optional<Room> room = roomRepository.find(inputData.getRoomId());
+        room.get().exitRoom(inputData.getSession());
 
-        return new RoomExitOutputData("fds");
+        return new RoomExitOutputData();
     }
 }
