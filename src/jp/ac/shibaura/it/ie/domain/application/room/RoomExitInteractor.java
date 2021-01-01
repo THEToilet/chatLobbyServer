@@ -7,13 +7,16 @@ import jp.ac.shibaura.it.ie.domain.model.user.*;
 import jp.ac.shibaura.it.ie.usecases.room.exit.RoomExitInputData;
 import jp.ac.shibaura.it.ie.usecases.room.exit.RoomExitOutputData;
 import jp.ac.shibaura.it.ie.usecases.room.exit.RoomExitUseCase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 public class RoomExitInteractor implements RoomExitUseCase {
-    @Inject
+    @Autowired
     private RoomRepository roomRepository;
-    @Inject
+    @Autowired
     private UserRepository userRepository;
 
     @Override

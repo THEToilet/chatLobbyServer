@@ -6,12 +6,15 @@ import jp.ac.shibaura.it.ie.usecases.user.add.UserAddOutputData;
 import jp.ac.shibaura.it.ie.usecases.user.update.UserUpdateInputData;
 import jp.ac.shibaura.it.ie.usecases.user.update.UserUpdateOutputData;
 import jp.ac.shibaura.it.ie.usecases.user.update.UserUpdateUseCase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 public class UserUpdateInteractor implements UserUpdateUseCase {
 
-    @Inject
+    @Autowired
     private UserRepository userRepository;
 
     @Override

@@ -6,6 +6,7 @@ import jp.ac.shibaura.it.ie.domain.application.category.CategoryListInteractor;
 import jp.ac.shibaura.it.ie.usecases.category.join.CategoryJoinInputData;
 import jp.ac.shibaura.it.ie.usecases.category.list.CategoryListInputData;
 import jp.ac.shibaura.it.ie.usecases.core.OutputData;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

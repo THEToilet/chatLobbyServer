@@ -5,11 +5,14 @@ import jp.ac.shibaura.it.ie.domain.model.user.*;
 import jp.ac.shibaura.it.ie.usecases.room.start.RoomStartInputData;
 import jp.ac.shibaura.it.ie.usecases.room.start.RoomStartOutputData;
 import jp.ac.shibaura.it.ie.usecases.room.start.RoomStartUseCase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 public class RoomStartInteractor implements RoomStartUseCase {
-    @Inject
+    @Autowired
     private UserRepository userRepository;
 
     @Override

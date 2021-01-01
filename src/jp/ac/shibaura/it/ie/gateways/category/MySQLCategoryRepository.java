@@ -3,11 +3,13 @@ package jp.ac.shibaura.it.ie.gateways.category;
 import jp.ac.shibaura.it.ie.domain.model.category.Category;
 import jp.ac.shibaura.it.ie.domain.model.category.CategoryRepository;
 import jp.ac.shibaura.it.ie.gateways.databese.MySQLComm;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class MySQLCategoryRepository implements CategoryRepository {
     @Override
     public void save(Category category) {

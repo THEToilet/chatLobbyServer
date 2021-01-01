@@ -8,18 +8,21 @@ import jp.ac.shibaura.it.ie.domain.model.user.UserRepository;
 import jp.ac.shibaura.it.ie.usecases.category.join.CategoryJoinInputData;
 import jp.ac.shibaura.it.ie.usecases.category.join.CategoryJoinOutputData;
 import jp.ac.shibaura.it.ie.usecases.category.join.CategoryJoinUseCase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 public class CategoryJoinInteractor implements CategoryJoinUseCase {
 
-    @Inject
+    @Autowired
     private RoomRepository roomRepository;
 
-    @Inject
+    @Autowired
     private SessionRepository sessionRepository;
 
-    @Inject
+    @Autowired
     private UserRepository userRepository;
 
     @Override

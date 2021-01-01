@@ -6,11 +6,14 @@ import jp.ac.shibaura.it.ie.usecases.auth.entry.AuthEntryOutputData;
 import jp.ac.shibaura.it.ie.usecases.room.wait.RoomWaitInputData;
 import jp.ac.shibaura.it.ie.usecases.room.wait.RoomWaitOutputData;
 import jp.ac.shibaura.it.ie.usecases.room.wait.RoomWaitUseCase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 public class RoomWaitInteractor implements RoomWaitUseCase {
-    @Inject
+    @Autowired
     private UserRepository userRepository;
 
     @Override

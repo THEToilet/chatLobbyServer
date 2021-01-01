@@ -11,7 +11,6 @@ public interface RoomRepository {
 
     public void remove(Room room);
 
-    public List<Room> findAll();
 
     public Room find(String categoryId);
 }

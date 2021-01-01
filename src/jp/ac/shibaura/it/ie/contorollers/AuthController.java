@@ -1,6 +1,7 @@
 package jp.ac.shibaura.it.ie.contorollers;
 
-import com.google.inject.Inject;
+import jp.ac.shibaura.it.ie.domain.application.session.SessionInteractor;
+import jp.ac.shibaura.it.ie.log.LogUtils;
 import jp.ac.shibaura.it.ie.usecases.auth.entry.AuthEntryInputData;
 import jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginInputData;
 import jp.ac.shibaura.it.ie.domain.application.auth.AuthLoginInteractor;
@@ -9,37 +10,56 @@ import jp.ac.shibaura.it.ie.domain.application.auth.AuthEntryInteractor;
 import jp.ac.shibaura.it.ie.usecases.auth.logout.AuthLogoutInputData;
 import jp.ac.shibaura.it.ie.usecases.core.OutputData;
 
+import jp.ac.shibaura.it.ie.usecases.error.ErrorOutputData;
+import jp.ac.shibaura.it.ie.usecases.session.SessionInputData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 
+@EnableAutoConfiguration
 @RestController
+@Component
 public class AuthController {
 
-    @Inject
+    @Autowired
     private AuthLoginInteractor authLoginInteractor;
 
-    @Inject
+    @Autowired
     private AuthEntryInteractor authEntryInteractor;
 
-    @Inject
+    @Autowired
     private AuthLogoutInteractor authLogoutInteractor;
+
+    @Autowired
+    private SessionInteractor sessionInteractor;
+
+    @Autowired
+    private LogUtils logger;
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public OutputData login(@RequestParam("id") String id, @RequestParam("password") String password) {
-        AuthLoginInputData inputData = new AuthLoginInputData(id, password);
+    @ResponseBody
+    public OutputData login(@RequestBody AuthLoginInputData inputData) {
         return authLoginInteractor.handle(inputData);
     }
 
     @RequestMapping(value = "/entry", method = RequestMethod.POST)
-    public OutputData entry(@RequestParam("id") String id, @RequestParam("name") String name, @RequestParam("password") String password) {
-        AuthEntryInputData inputData = new AuthEntryInputData(id, name, password);
+    @ResponseBody
+    public OutputData entry(@RequestBody AuthEntryInputData inputData) {
+        logger.info(inputData.getId()+inputData.getName()+inputData.getPassword());
+        logger.info(inputData.toString());
         return authEntryInteractor.handle(inputData);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public OutputData logout(@RequestParam("id") String id, @RequestParam("session") String session) {
-        AuthLogoutInputData inputData = new AuthLogoutInputData(id, session);
+    @ResponseBody
+    public OutputData logout(@RequestHeader("session") String session, @RequestBody AuthLogoutInputData inputData) {
+        if(sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
+            logger.info("fdf");
+            throw  new RuntimeException();
+        }
         return authLogoutInteractor.handle(inputData);
     }
 }
