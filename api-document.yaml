@@ -2,10 +2,12 @@ openapi: 3.0.2
 info:
   title: API定義
   description: |
-    情報実験のアプリケーション用のサーバです
-  version: 1.0.0
+    情報実験のロビー用のサーバです
+  version: 1.1.0
+  contact:
+    url: 'http://github.com/THEToilet'
 servers:
-  - url: http://localhost:8080/
+  - url: 'http://localhost:8080'
 tags:
   - name: auth
     description: 認証
@@ -25,47 +27,67 @@ paths:
       summary: ユーザログインAPI
       description: |
         ログインを行います
-      requestBody:
-        description: Request Body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthLoginRequest'
-        required: true
       responses:
-        200:
-          description: A successful response.
+        '200':
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthLoginResponse'
+                type: object
+                properties:
+                  session:
+                    type: string
+                    description: トークン
+        '400':
+          description: Bad Request
       x-codegen-request-body-name: body
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: ユーザId
+                userPassword:
+                  type: string
+                  description: ユーザパスワード
+      operationId: '5'
   /entry:
     post:
       tags:
         - auth
-      summary: ユーザログインAPI
+      summary: ユーザ登録API
       description: |
-        ログインを行います
+        ユーザ情報を登録します
+      responses:
+        '200':
+          description: A successful response.
+          content: {}
+        '400':
+          description: Bad Request
+      x-codegen-request-body-name: body
       requestBody:
-        description: Request Body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserUpdateRequest'
-        required: true
-      responses:
-        200:
-          description: A successful response.
-          content: {}
-      x-codegen-request-body-name: body
+              type: object
+              properties:
+                userId:
+                  type: string
+                userName:
+                  type: string
+                userPassword:
+                  type: string
+      operationId: '3'
   /logout:
     get:
       tags:
         - auth
-      summary: ユーザログインAPI
+      summary: ユーザログアウトAPI
       description: |
-        ログインを行います
+        ログアウトを行います
       parameters:
         - name: session
           in: header
@@ -74,10 +96,13 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: A successful response.
           content: {}
+        '400':
+          description: Bad Request
       x-codegen-request-body-name: body
+      operationId: '6'
   /user/update:
     post:
       tags:
@@ -85,7 +110,7 @@ paths:
       summary: ユーザ情報更新API
       description: |
         ユーザ情報の更新をします。
-        初期実装では名前の更新を行います。
+        名前の更新を行います。
       parameters:
         - name: session
           in: header
@@ -93,24 +118,32 @@ paths:
           required: true
           schema:
             type: string
+      responses:
+        '200':
+          description: A successful response.
+          content: {}
+        '400':
+          description: Bad Request
+      x-codegen-request-body-name: body
       requestBody:
-        description: Request Body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserUpdateRequest'
-        required: true
-      responses:
-        200:
-          description: A successful response.
-          content: {}
-      x-codegen-request-body-name: body
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: ユーザのId
+                userName:
+                  type: string
+                  description: 変更した後のユーザ名
+      operationId: '9'
   /image/list:
     get:
       tags:
         - image
-      summary: コレクションアイテム一覧情報取得API
-      description: コレクションアイテム一覧情報。
+      summary: カテゴリーに基づく画像一覧取得API
+      description: 画像一覧を返します
       parameters:
         - name: session
           in: header
@@ -118,39 +151,34 @@ paths:
           required: true
           schema:
             type: string
-      responses:
-        200:
-          description: A successful response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ImageListResponse'
-  /image/save:
-    post:
-      tags:
-        - image
-      summary: コレクションアイテム一覧情報取得API
-      description: コレクションアイテム一覧情報。
-      parameters:
-        - name: session
-          in: header
-          description: 認証トークン
-          required: true
-          schema:
+        - schema:
             type: string
+          in: query
+          name: categoryId
+          description: カテゴリー
+          required: true
       responses:
-        200:
-          description: A successful response.
+        '200':
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ImageListResponse'
+                type: object
+                properties:
+                  images:
+                    type: array
+                    description: 画像のURL集
+                    items:
+                      type: string
+        '400':
+          description: Bad Request
+      operationId: '4'
   /category/list:
     get:
       tags:
         - category
-      summary: コレクションアイテム一覧情報取得API
-      description: コレクションアイテム一覧情報。
+      summary: カテゴリ一覧情報取得API
+      description: カテゴリーの一覧情報を取得します。
       parameters:
         - name: session
           in: header
@@ -159,18 +187,31 @@ paths:
           schema:
             type: string
       responses:
-        200:
-          description: A successful response.
+        '200':
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CategoryListResponse'
-  /category/:categoryId/join:
+                type: object
+                properties:
+                  category:
+                    type: object
+                    properties:
+                      categoryId:
+                        type: string
+                        description: カテゴリーのId
+                      categoryName:
+                        type: string
+                        description: カテゴリーの名前
+        '400':
+          description: Bad Request
+      operationId: '1'
+  '/category/{categoryId}/join':
     get:
       tags:
         - category
-      summary: コレクションアイテム一覧情報取得API
-      description: コレクションアイテム一覧情報。
+      summary: カテゴリーを指定して部屋に入るAPI
+      description: カテゴリーを指定して部屋に入るAPI
       parameters:
         - name: session
           in: header
@@ -179,18 +220,24 @@ paths:
           schema:
             type: string
       responses:
-        200:
-          description: A successful response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CategoryListResponse'
-  /room/:roomId/start:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: '2'
+    parameters:
+      - schema:
+          type: string
+        name: categoryId
+        in: path
+        required: true
+        description: カテゴリーId
+  '/room/{roomId}/exit':
     get:
       tags:
         - room
-      summary: コレクションアイテム一覧情報取得API
-      description: コレクションアイテム一覧情報。
+      summary: 待機中の部屋を抜けるAPI
+      description: 待機中の部屋を抜けるときに叩きます
       parameters:
         - name: session
           in: header
@@ -199,18 +246,24 @@ paths:
           schema:
             type: string
       responses:
-        200:
-          description: A successful response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CategoryListResponse'
-  /room/:roomId/exit:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: '7'
+    parameters:
+      - schema:
+          type: string
+        name: roomId
+        in: path
+        required: true
+        description: ルームId
+  '/room/{roomId}/wait':
     get:
       tags:
         - room
-      summary: コレクションアイテム一覧情報取得API
-      description: コレクションアイテム一覧情報。
+      summary: ルーム待機中API
+      description: 部屋が完成するまで一秒間ごとにこのAPIを叩きます
       parameters:
         - name: session
           in: header
@@ -219,125 +272,27 @@ paths:
           schema:
             type: string
       responses:
-        200:
-          description: A successful response.
+        '200':
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CategoryListResponse'
-  /room/:roomId/wait:
-    get:
-      tags:
-        - room
-      summary: コレクションアイテム一覧情報取得API
-      description: コレクションアイテム一覧情報。
-      parameters:
-        - name: session
-          in: header
-          description: 認証トークン
-          required: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: A successful response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CategoryListResponse'
+                type: object
+                properties:
+                  numberOfWaitUser:
+                    type: integer
+                  start:
+                    type: boolean
+        '400':
+          description: Bad Request
+      operationId: '8'
+    parameters:
+      - schema:
+          type: string
+        name: roomId
+        in: path
+        required: true
+        description: ルームId
 components:
-  schemas:
-    AuthLoginRequest:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ユーザID
-        password:
-          type: string
-          description: パスワード
-    AuthLoginResponse:
-      type: object
-      properties:
-        session:
-          type: string
-          description: クライアント側で保存するトークン
-    UserCreateRequest:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ユーザID
-        name:
-          type: string
-          description: ユーザの名前
-        password:
-          type: string
-          description: パスワード
-    UserCreateResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          description: クライアント側で保存するトークン
-    UserGetResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ユーザID
-        name:
-          type: string
-          description: ユーザの名前
-        password:
-          type: string
-          description: パスワード
-    UserUpdateRequest:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ユーザID
-        name:
-          type: string
-          description: ユーザの名前
-    ImageListResponse:
-      type: object
-      properties:
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/ImageItem'
-          description: 所持アイテム名一覧
-    ImageItem:
-      type: object
-      properties:
-        category:
-          type: string
-          description: カテゴリ番号
-        imageID:
-          type: string
-          description: 画像ID
-        imageSource:
-          type: string
-          description: 画像
-    CategoryListResponse:
-      type: object
-      properties:
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/CategoryItem'
-          description: 所持アイテム名一覧
-    CategoryItem:
-      type: object
-      properties:
-        category:
-          type: string
-          description: カテゴリ番号
-        imageID:
-          type: string
-          description: 画像ID
-        imageSource:
-          type: string
-          description: 画像
+  schemas: {}
+  securitySchemes: {}

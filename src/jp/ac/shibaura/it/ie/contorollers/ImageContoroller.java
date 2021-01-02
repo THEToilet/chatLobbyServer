@@ -22,10 +22,5 @@ public class ImageContoroller {
         return categoryListInteractor.handle(inputData);
     }
 
-    @RequestMapping(value = "/{categoryId}/save", method = RequestMethod.GET)
-    public OutputData imageSave(@RequestParam("session") String session, @RequestParam("userId") String userId, @PathVariable("categoryId") String categoryId) {
-        CategoryJoinInputData inputData = new CategoryJoinInputData(session, userId, categoryId);
-        return categoryJoinInteractor.handle(inputData);
-    }
      */
 }
