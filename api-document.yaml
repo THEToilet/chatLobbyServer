@@ -222,6 +222,13 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  roomId:
+                    type: string
         '400':
           description: Bad Request
       operationId: '2'

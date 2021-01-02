@@ -32,7 +32,7 @@ public class CategoryContoroller {
             logger.info("fdf");
             throw  new RuntimeException();
         }
-        return categoryListInteractor.handle(new CategoryListInputData());
+        return categoryListInteractor.handle(new CategoryListInputData(session));
     }
 
     @RequestMapping(value = "/{categoryId}/join", method = RequestMethod.GET)

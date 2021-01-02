@@ -1,16 +1,17 @@
 package jp.ac.shibaura.it.ie.domain.application.auth;
 
-import com.google.inject.Inject;
 import jp.ac.shibaura.it.ie.domain.model.session.SessionRepository;
 import jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginOutputData;
 import jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginInputData;
 import jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Component
+@Service
 public class AuthLoginInteractor implements AuthLoginUseCase {
 
     @Autowired

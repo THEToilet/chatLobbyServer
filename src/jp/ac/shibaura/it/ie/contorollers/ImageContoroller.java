@@ -1,26 +1,20 @@
 package jp.ac.shibaura.it.ie.contorollers;
 
-import jp.ac.shibaura.it.ie.usecases.category.join.CategoryJoinInputData;
-import jp.ac.shibaura.it.ie.usecases.category.list.CategoryListInputData;
+import jp.ac.shibaura.it.ie.domain.application.image.ImageListInteractor;
 import jp.ac.shibaura.it.ie.usecases.core.OutputData;
+import jp.ac.shibaura.it.ie.usecases.image.ImageListInputData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/image")
 public class ImageContoroller {
-    /*
     @Autowired
-    private ImageListInteractor ImageListInteractor;
-    @Autowired
-    private ImageSaveInteractor imageSaveInteractor;
+    private ImageListInteractor imageListInteractor;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public OutputData imageList(@RequestParam("session") String session, @RequestParam("userId") String userId) {
-        CategoryListInputData inputData = new CategoryListInputData(session);
-        return categoryListInteractor.handle(inputData);
+    public OutputData imageList(@RequestHeader("session") String session, @RequestParam("categoryId") String categoryId) {
+        ImageListInputData inputData = new ImageListInputData(session, categoryId);
+        return imageListInteractor.handle(inputData);
     }
-
-     */
 }

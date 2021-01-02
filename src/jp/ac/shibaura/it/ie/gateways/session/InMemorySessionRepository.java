@@ -1,8 +1,9 @@
 package jp.ac.shibaura.it.ie.gateways.session;
 
-import com.google.inject.Inject;
 import jp.ac.shibaura.it.ie.domain.model.session.SessionRepository;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Optional;

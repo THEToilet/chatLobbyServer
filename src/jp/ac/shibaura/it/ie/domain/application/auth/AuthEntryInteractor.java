@@ -24,6 +24,7 @@ public class AuthEntryInteractor implements AuthEntryUseCase {
                 new UserPassword(inputData.getPassword())
         );
 
-        return new AuthEntryOutputData(userRepository.save(user));
+        userRepository.save(user);
+        return new AuthEntryOutputData();
     }
 }

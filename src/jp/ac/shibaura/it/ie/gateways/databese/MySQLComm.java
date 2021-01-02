@@ -42,6 +42,7 @@ public class MySQLComm {
             System.out.println(sql);
             Statement st = this.getConn().createStatement();
             result = st.executeUpdate(sql);
+            System.out.println(result);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

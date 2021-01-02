@@ -10,7 +10,6 @@ import jp.ac.shibaura.it.ie.domain.application.auth.AuthEntryInteractor;
 import jp.ac.shibaura.it.ie.usecases.auth.logout.AuthLogoutInputData;
 import jp.ac.shibaura.it.ie.usecases.core.OutputData;
 
-import jp.ac.shibaura.it.ie.usecases.error.ErrorOutputData;
 import jp.ac.shibaura.it.ie.usecases.session.SessionInputData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
