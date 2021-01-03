@@ -6,22 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryListTestData {
-    public List<CategoryData> categoryList = new ArrayList<>();
+    private List<CategoryData> categoryList = new ArrayList<>();
 
-    public static class CategoryData {
-        public String categoryId;
-        public String categoryName;
-        public CategoryData(String categoryId, String categoryName){
-            this.categoryId = categoryId;
-            this.categoryName = categoryName;
-        }
+    public List<CategoryData> getCategoryList() {
+        return categoryList;
+    }
 
-        public String getCategoryId() {
-            return categoryId;
-        }
-
-        public String getCategoryName() {
-            return categoryName;
-        }
+    public void setCategoryList(List<CategoryData> categoryList) {
+        this.categoryList = categoryList;
     }
 }

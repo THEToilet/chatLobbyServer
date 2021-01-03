@@ -6,10 +6,12 @@ import jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginOutputData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,16 +73,18 @@ public class HttpUserTest {
 
         // カテゴリ一覧表示
         url = "http://localhost:8080/category/list";
-        //ResponseEntity<CategoryListTestData> categoryListEntiry = restTemplate.exchange(url, HttpMethod.GET, newEntiry, CategoryListTestData.class);
-        ResponseEntity<String> categoryListEntiry = restTemplate.exchange(url, HttpMethod.GET, newEntiry, String.class);
-        System.out.println("categoryList::" + categoryListEntiry.toString());
-        System.out.println("categoryList::" + categoryListEntiry.getBody());
-        System.out.println("categoryList::" + categoryListEntiry.getStatusCodeValue());
+        ResponseEntity<String> categoryListEntry2 = restTemplate.exchange(url, HttpMethod.GET, newEntiry, String.class);
+        System.out.println("categoryList::" + categoryListEntry2.toString());
+        ResponseEntity<CategoryListTestData> categoryListEntry = restTemplate.exchange(url, HttpMethod.GET, newEntiry, new ParameterizedTypeReference<CategoryListTestData>() {
+        });
+        System.out.println("categoryList::" + categoryListEntry.toString());
+        System.out.println("categoryList::" + categoryListEntry.getBody());
+        System.out.println("categoryList::" + categoryListEntry.getStatusCodeValue());
         // categoryListEntiry.getBody().category;
-       // System.out.println(categoryListEntiry.getBody().categoryList.size());
-       // for (int i = 0; i < categoryListEntiry.getBody().categoryList.size(); i++) {
-       //     System.out.println("categoryの情報は:" + categoryListEntiry.getBody().categoryList.get(i).getCategoryId());
-       // }
+        System.out.println(categoryListEntry.getBody().getCategoryList().size());
+        for (int i = 0; i < categoryListEntry.getBody().getCategoryList().size(); i++) {
+            System.out.println("categoryの情報は:" + categoryListEntry.getBody().getCategoryList().get(i).getCategoryId() + ":" + categoryListEntry.getBody().getCategoryList().get(i).getCategoryName());
+        }
 
         // ルーム参加
         url = "http://localhost:8080/category/1/join";
