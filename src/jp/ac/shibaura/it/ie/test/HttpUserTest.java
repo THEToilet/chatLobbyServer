@@ -71,21 +71,29 @@ public class HttpUserTest {
 
         // カテゴリ一覧表示
         url = "http://localhost:8080/category/list";
-        ResponseEntity<CategoryListTestData> categoryListEntiry = restTemplate.exchange(url, HttpMethod.GET, newEntiry, CategoryListTestData.class);
-       // ResponseEntity<String> categoryListEntiry = restTemplate.exchange(url, HttpMethod.GET, newEntiry, String.class);
+        //ResponseEntity<CategoryListTestData> categoryListEntiry = restTemplate.exchange(url, HttpMethod.GET, newEntiry, CategoryListTestData.class);
+        ResponseEntity<String> categoryListEntiry = restTemplate.exchange(url, HttpMethod.GET, newEntiry, String.class);
         System.out.println("categoryList::" + categoryListEntiry.toString());
         System.out.println("categoryList::" + categoryListEntiry.getBody());
         System.out.println("categoryList::" + categoryListEntiry.getStatusCodeValue());
         // categoryListEntiry.getBody().category;
-        System.out.println(categoryListEntiry.getBody().categoryList.size());
-        for (int i = 0; i < categoryListEntiry.getBody().categoryList.size(); i++) {
-            System.out.println("categoryの情報は:" + categoryListEntiry.getBody().categoryList.get(i).getCategoryId());
-        }
+       // System.out.println(categoryListEntiry.getBody().categoryList.size());
+       // for (int i = 0; i < categoryListEntiry.getBody().categoryList.size(); i++) {
+       //     System.out.println("categoryの情報は:" + categoryListEntiry.getBody().categoryList.get(i).getCategoryId());
+       // }
 
         // ルーム参加
         url = "http://localhost:8080/category/1/join";
-        ResponseEntity<String> categoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        ResponseEntity<CategoryJoinTestData> categoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, CategoryJoinTestData.class);
         System.out.println("categoryJoin::" + categoryJoinResponseEntity.toString());
+        System.out.println("categoryJoin::" + categoryJoinResponseEntity.getBody().getRoomId());
+        String roomId = categoryJoinResponseEntity.getBody().getRoomId();
+
+        // ルーム待機
+        url = "http://localhost:8080/room/" + roomId + "/wait";
+
+        // ルーム退出
+        url = "http//localhost:8080/room/" + roomId + "/exit";
 
         // ユーザログアウト
         url = "http://localhost:8080/logout";

@@ -8,9 +8,9 @@ import java.util.List;
 public class CategoryListTestData {
     public List<CategoryData> categoryList = new ArrayList<>();
 
-    public class CategoryData {
-        private String categoryId;
-        private String categoryName;
+    public static class CategoryData {
+        public String categoryId;
+        public String categoryName;
         public CategoryData(String categoryId, String categoryName){
             this.categoryId = categoryId;
             this.categoryName = categoryName;
