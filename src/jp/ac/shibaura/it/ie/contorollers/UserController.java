@@ -8,6 +8,8 @@ import jp.ac.shibaura.it.ie.usecases.core.OutputData;
 import jp.ac.shibaura.it.ie.usecases.session.SessionInputData;
 import jp.ac.shibaura.it.ie.usecases.user.update.UserUpdateInputData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,11 +26,12 @@ public class UserController {
     private LogUtils logger;
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public OutputData userUpdate(@RequestParam("session") String session, @RequestBody UserUpdateInputData inputDate) {
+    public ResponseEntity<String> userUpdate(@RequestHeader("session") String session, @RequestBody UserUpdateInputData inputDate) {
         if(!sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
             logger.info("fdf");
             throw  new RuntimeException();
         }
-        return userUpdateInteractor.handle(inputDate);
+        userUpdateInteractor.handle(inputDate);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package jp.ac.shibaura.it.ie.gateways.image;
 
+import jp.ac.shibaura.it.ie.domain.model.image.Image;
 import jp.ac.shibaura.it.ie.domain.model.image.ImageRepository;
 import jp.ac.shibaura.it.ie.domain.model.user.*;
 import jp.ac.shibaura.it.ie.gateways.databese.MySQLComm;
@@ -25,13 +26,13 @@ public class MySQLImageRepository implements ImageRepository {
 
 
     @Override
-    public List<String> findAll(String categoryId) {
-        List<String> imageList = new ArrayList<>();
+    public List<Image> findAll(String categoryId) {
+        List<Image> imageList = new ArrayList<>();
         MySQLComm comm = MySQLComm.getInstance();
-        ResultSet rs = comm.sqlExecuteQuery(String.format("select * from image where categoryId = '%s';",categoryId));
+        ResultSet rs = comm.sqlExecuteQuery(String.format("select * from image where categoryId = '%s';", categoryId));
         try {
             while (rs.next()) {
-                imageList.add(rs.getString("url"));
+                imageList.add(new Image(rs.getString("url")));
             }
         } catch (Exception e) {
             e.printStackTrace();

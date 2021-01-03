@@ -13,6 +13,8 @@ import jp.ac.shibaura.it.ie.usecases.core.OutputData;
 import jp.ac.shibaura.it.ie.usecases.session.SessionInputData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,18 +48,22 @@ public class AuthController {
 
     @RequestMapping(value = "/entry", method = RequestMethod.POST)
     @ResponseBody
-    public OutputData entry(@RequestBody AuthEntryInputData inputData) {
+    public ResponseEntity<String> entry(@RequestBody AuthEntryInputData inputData) {
         logger.info(inputData.getId()+inputData.getName()+inputData.getPassword());
         logger.info(inputData.toString());
-        return authEntryInteractor.handle(inputData);
+        authEntryInteractor.handle(inputData);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     @ResponseBody
-    public OutputData logout(@RequestHeader("session") String session) {
+    public ResponseEntity<String> logout(@RequestHeader("session") String session) {
         if(!sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
-            throw  new RuntimeException();
+            logger.info("unko");
+            throw new RuntimeException();
         }
-        return authLogoutInteractor.handle(new AuthLogoutInputData(session));
+        logger.info("kuso");
+        authLogoutInteractor.handle(new AuthLogoutInputData(session));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

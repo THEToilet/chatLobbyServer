@@ -5,7 +5,7 @@ import java.util.List;
 public interface ImageRepository {
     public void save(String categoryId, String URL);
 
-    public List<String> findAll(String categoryId);
+    public List<Image> findAll(String categoryId);
 }
 
 
