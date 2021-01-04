@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImageListOutputData implements OutputData {
-    private List<Image> urls = new ArrayList<>();
-    public ImageListOutputData(List<Image> urls){
-        this.urls = urls;
+    private List<Image> images = new ArrayList<>();
+    public ImageListOutputData(List<Image> images){
+        this.images = images;
     }
 
     public List<Image> getUrls() {
-        return urls;
+        return images;
     }
 }

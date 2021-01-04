@@ -69,8 +69,8 @@ public class HttpSequenceTest {
         System.out.println("imageList::" + imageListEntiry.getBody());
         System.out.println("imageList::" + imageListEntiry.getStatusCodeValue());
         ListImageTestData tempUrl = imageListEntiry.getBody();
-        for (int i = 0; i < tempUrl.urls.size(); i++) {
-            System.out.println("imageのURLは:" + tempUrl.urls.get(i).imageUrl);
+        for (int i = 0; i < tempUrl.images.size(); i++) {
+            System.out.println("imageのURLは:" + tempUrl.images.get(i).getImageUrl());
         }
 
         // カテゴリ一覧表示

@@ -32,7 +32,7 @@ public class MySQLImageRepository implements ImageRepository {
         ResultSet rs = comm.sqlExecuteQuery(String.format("select * from image where categoryId = '%s';", categoryId));
         try {
             while (rs.next()) {
-                imageList.add(new Image(rs.getString("url")));
+                imageList.add(new Image(rs.getString("url"), rs.getString("fileName"), rs.getString("fileExtension")));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -43,8 +43,8 @@ public class HttpGetImageListTest {
         System.out.println("imageList::" + imageListEntry.getBody());
         System.out.println("imageList::" + imageListEntry.getStatusCodeValue());
         ListImageTestData tempUrl = imageListEntry.getBody();
-        for (int i = 0; i < tempUrl.urls.size(); i++) {
-            System.out.println("imageのURLは:" + tempUrl.urls.get(i).imageUrl);
+        for (int i = 0; i < tempUrl.images.size(); i++) {
+            System.out.println("imageのURLは:" + tempUrl.images.get(i).getImageUrl());
         }
     }
 

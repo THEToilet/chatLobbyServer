@@ -1,5 +1,9 @@
 package jp.ac.shibaura.it.ie.test.http;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jp.ac.shibaura.it.ie.test.data.ImagePostTestData;
+import jp.ac.shibaura.it.ie.test.data.ImageTestData;
 import jp.ac.shibaura.it.ie.test.data.LoginTestData;
 import jp.ac.shibaura.it.ie.test.data.RoomWaitTestData;
 import jp.ac.shibaura.it.ie.test.interactor.AuthTest;
@@ -21,12 +25,13 @@ import java.util.*;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class HttpMakeRoomTest {
+public class HttpExchangeMessageTest {
 
     private RestTemplate restTemplate = new RestTemplate();
     private String url;
     private List<String> sessions = new ArrayList<String>();
     private Map<String, String> users = new LinkedHashMap<>();
+    private String roomId;
 
     /**
      * ユーザ4人がログインします
@@ -46,15 +51,6 @@ public class HttpMakeRoomTest {
             sessions.add(loginResponseEntity.getBody().getSession());
         });
 
-    }
-
-    /**
-     * @throws Exception
-     * 4人がルームに参加した後にアプリケーションサーバに送られたかどうかをテストします
-     */
-    @Test
-    public void testUserUpdate() throws Exception {
-
         sessions.forEach(s -> {
             HttpHeaders headers = new HttpHeaders();
             headers.add("session", s);
@@ -66,7 +62,7 @@ public class HttpMakeRoomTest {
             ResponseEntity<AuthTest.CategoryJoinTestData> categoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, AuthTest.CategoryJoinTestData.class);
             System.out.println("categoryJoin:" + categoryJoinResponseEntity.toString());
             System.out.println("categoryJoin:" + categoryJoinResponseEntity.getBody().getRoomId());
-            String roomId = categoryJoinResponseEntity.getBody().getRoomId();
+            roomId = categoryJoinResponseEntity.getBody().getRoomId();
 
             // ルーム待機
             url = "http://localhost:8080/room/" + roomId + "/wait";
@@ -77,7 +73,41 @@ public class HttpMakeRoomTest {
     }
 
     /**
-     *  4人ログアウトする
+     *  メッセージの送受信をする
+     */
+    @Test
+    public void testExchangeMessage() {
+        sessions.forEach(s -> {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("session", s);
+
+            // メッセージ送信API
+            url = "http://localhost:8081/chat/" + roomId + "/message/post";
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            String reqBodyData = null;
+            try {
+                reqBodyData = new ObjectMapper().writeValueAsString(new ImagePostTestData(ImageTestData.image, "unko", "png"));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            HttpEntity<String> newEntity = new HttpEntity<String>(reqBodyData, headers);
+           // HttpEntity<String> roomStart =  restTemplate.postForEntity(url, new ImagePostTestData(ImageTestData.image, "unko", "png"), String.class);
+            HttpEntity<String> roomStart =  restTemplate.postForEntity(url, newEntity, String.class);
+            System.out.println("message/post:" + roomStart.toString());
+
+
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+            // メッセージ送信API
+            url = "http://localhost:8081/chat/" + roomId + "/message/update";
+            ResponseEntity<String> categoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            System.out.println("message/update:" + categoryJoinResponseEntity.toString());
+        });
+
+    }
+
+
+    /**
+     * 4人ログアウトする
      */
     @After
     public void testLogout() {

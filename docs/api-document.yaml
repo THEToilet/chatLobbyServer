@@ -166,10 +166,17 @@ paths:
                 type: object
                 properties:
                   images:
-                    type: array
-                    description: 画像のURL集
-                    items:
-                      type: string
+                    type: object
+                    properties:
+                      imageUrl:
+                        type: string
+                        description: url
+                      fileName:
+                        type: string
+                        description: ファイル名
+                      fileExtension:
+                        type: string
+                        description: ファイル拡張子
         '400':
           description: Bad Request
       operationId: '4'
