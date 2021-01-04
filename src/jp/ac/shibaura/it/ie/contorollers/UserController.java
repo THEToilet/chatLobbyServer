@@ -27,9 +27,9 @@ public class UserController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<String> userUpdate(@RequestHeader("session") String session, @RequestBody UserUpdateInputData inputDate) {
-        if(!sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
-            logger.info("fdf");
-            throw  new RuntimeException();
+        if (!sessionInteractor.handle(new SessionInputData(session)).isSuccess()) {
+            logger.warn("認証エラー");
+            throw new RuntimeException();
         }
         userUpdateInteractor.handle(inputDate);
         return new ResponseEntity<>(HttpStatus.OK);

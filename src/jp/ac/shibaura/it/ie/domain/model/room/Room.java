@@ -30,17 +30,21 @@ public class Room {
     }
 
     public int getNumberOfUser(){
-       return users.size();
+       return this.users.size();
     }
     public int getMaxNumberOfUser(){
         return 4;
     }
 
+    public List<String> getUsers() {
+        return users;
+    }
+
     public void joinRoom(String session){
-        users.add(session);
+        this.users.add(session);
     }
     public void exitRoom(String session){
-        users.remove(session);
+        this.users.remove(session);
     }
 
 }

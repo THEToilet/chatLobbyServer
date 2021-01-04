@@ -1,4 +1,4 @@
-package jp.ac.shibaura.it.ie.test;
+package jp.ac.shibaura.it.ie.test.data;
 
 public class LoginTestData {
     private String userId;

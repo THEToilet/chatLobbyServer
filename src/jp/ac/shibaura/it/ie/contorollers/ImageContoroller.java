@@ -24,7 +24,7 @@ public class ImageContoroller {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public OutputData imageList(@RequestHeader("session") String session, @RequestParam("categoryId") String categoryId) {
         if(!sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
-            logger.info("unko");
+            logger.warn("認証エラー");
             throw new RuntimeException();
         }
         ImageListInputData inputData = new ImageListInputData(session, categoryId);

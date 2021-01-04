@@ -22,8 +22,10 @@ public class RoomExitInteractor implements RoomExitUseCase {
     public RoomExitOutputData handle(RoomExitInputData inputData) {
 
         Optional<Room> room = roomRepository.find(inputData.getRoomId());
+        if(!room.isPresent()){
+            throw new RuntimeException();
+        }
         room.get().exitRoom(inputData.getSession());
-
         return new RoomExitOutputData();
     }
 }

@@ -1,4 +1,4 @@
-package jp.ac.shibaura.it.ie.test;
+package jp.ac.shibaura.it.ie.test.interactor;
 
 import jp.ac.shibaura.it.ie.domain.application.user.UserUpdateInteractor;
 import jp.ac.shibaura.it.ie.domain.model.session.SessionRepository;

@@ -1,4 +1,4 @@
-package jp.ac.shibaura.it.ie.test;
+package jp.ac.shibaura.it.ie.test.interactor;
 
 import jp.ac.shibaura.it.ie.domain.application.auth.AuthEntryInteractor;
 import jp.ac.shibaura.it.ie.domain.application.auth.AuthLoginInteractor;
@@ -54,4 +54,13 @@ public class AuthTest {
     }
 
 
+    public static class CategoryJoinTestData {
+        private String roomId;
+        public String getRoomId() {
+            return roomId;
+        }
+        public void setRoomId(String roomId) {
+            this.roomId = roomId;
+        }
+    }
 }

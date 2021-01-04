@@ -1,6 +1,7 @@
 package jp.ac.shibaura.it.ie.domain.application.auth;
 
 import jp.ac.shibaura.it.ie.domain.model.session.SessionRepository;
+import jp.ac.shibaura.it.ie.log.LogUtils;
 import jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginOutputData;
 import jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginInputData;
 import jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginUseCase;
@@ -17,10 +18,13 @@ public class AuthLoginInteractor implements AuthLoginUseCase {
     @Autowired
     private SessionRepository sessionRepository;
 
+    @Autowired
+    private LogUtils logger;
+
     @Override
     public AuthLoginOutputData handle(AuthLoginInputData inputData) {
         String uuid = UUID.randomUUID().toString();
-        System.out.println(uuid + ":" + inputData.getUserId());
+        logger.info(uuid + ":" + inputData.getUserId());
         sessionRepository.save(uuid, inputData.getUserId());
         return new AuthLoginOutputData(uuid);
     }

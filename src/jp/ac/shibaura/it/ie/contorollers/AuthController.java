@@ -59,10 +59,9 @@ public class AuthController {
     @ResponseBody
     public ResponseEntity<String> logout(@RequestHeader("session") String session) {
         if(!sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
-            logger.info("unko");
+            logger.warn("認証エラー");
             throw new RuntimeException();
         }
-        logger.info("kuso");
         authLogoutInteractor.handle(new AuthLogoutInputData(session));
         return new ResponseEntity<>(HttpStatus.OK);
     }

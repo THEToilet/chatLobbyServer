@@ -29,7 +29,7 @@ public class CategoryContoroller {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public OutputData categoryList(@RequestHeader("session") String session) {
         if(!sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
-            logger.info("fdf");
+            logger.warn("認証エラー");
             throw  new RuntimeException();
         }
         return categoryListInteractor.handle(new CategoryListInputData(session));
@@ -38,7 +38,7 @@ public class CategoryContoroller {
     @RequestMapping(value = "/{categoryId}/join", method = RequestMethod.GET)
     public OutputData categoryJoin(@RequestHeader("session") String session, @PathVariable("categoryId") String categoryId) {
         if(!sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
-            logger.info("fdf");
+            logger.warn("認証エラー");
             throw  new RuntimeException();
         }
         return categoryJoinInteractor.handle(new CategoryJoinInputData(session, categoryId));

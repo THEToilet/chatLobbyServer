@@ -1,6 +1,11 @@
-package jp.ac.shibaura.it.ie.test;
+package jp.ac.shibaura.it.ie.test.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jp.ac.shibaura.it.ie.test.interactor.AuthTest;
+import jp.ac.shibaura.it.ie.test.data.CategoryListTestData;
+import jp.ac.shibaura.it.ie.test.data.ListImageTestData;
+import jp.ac.shibaura.it.ie.test.data.LoginTestData;
+import jp.ac.shibaura.it.ie.test.data.RoomWaitTestData;
 import jp.ac.shibaura.it.ie.usecases.auth.entry.AuthEntryInputData;
 import jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginOutputData;
 import org.junit.Test;
@@ -11,16 +16,14 @@ import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class HttpUserTest {
+public class HttpSequenceTest {
 
     @Test
     public void testUserUpdate() throws Exception {
@@ -41,7 +44,7 @@ public class HttpUserTest {
         System.out.println("login::" + loginResponseEntity.getBody().getSession());
         String session = loginResponseEntity.getBody().getSession();
 
-
+        // header作成
         HttpHeaders headers = new HttpHeaders();
 
         // 名前変更
@@ -62,7 +65,6 @@ public class HttpUserTest {
         url = "http://localhost:8080/image/list?categoryId=test";
         HttpEntity<String> newEntiry = new HttpEntity<String>(headers);
         ResponseEntity<ListImageTestData> imageListEntiry = restTemplate.exchange(url, HttpMethod.GET, newEntiry, ListImageTestData.class);
-        // ResponseEntity<String> categoryListEntiry = restTemplate.exchange(url, HttpMethod.GET, newEntiry, String.class);
         System.out.println("imageList::" + imageListEntiry.toString());
         System.out.println("imageList::" + imageListEntiry.getBody());
         System.out.println("imageList::" + imageListEntiry.getStatusCodeValue());
@@ -80,7 +82,6 @@ public class HttpUserTest {
         System.out.println("categoryList::" + categoryListEntry.toString());
         System.out.println("categoryList::" + categoryListEntry.getBody());
         System.out.println("categoryList::" + categoryListEntry.getStatusCodeValue());
-        // categoryListEntiry.getBody().category;
         System.out.println(categoryListEntry.getBody().getCategoryList().size());
         for (int i = 0; i < categoryListEntry.getBody().getCategoryList().size(); i++) {
             System.out.println("categoryの情報は:" + categoryListEntry.getBody().getCategoryList().get(i).getCategoryId() + ":" + categoryListEntry.getBody().getCategoryList().get(i).getCategoryName());
@@ -88,16 +89,24 @@ public class HttpUserTest {
 
         // ルーム参加
         url = "http://localhost:8080/category/1/join";
-        ResponseEntity<CategoryJoinTestData> categoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, CategoryJoinTestData.class);
+        ResponseEntity<AuthTest.CategoryJoinTestData> categoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, AuthTest.CategoryJoinTestData.class);
         System.out.println("categoryJoin::" + categoryJoinResponseEntity.toString());
         System.out.println("categoryJoin::" + categoryJoinResponseEntity.getBody().getRoomId());
         String roomId = categoryJoinResponseEntity.getBody().getRoomId();
 
         // ルーム待機
         url = "http://localhost:8080/room/" + roomId + "/wait";
+        ResponseEntity<String> roomWaitTestDataResponseEntity1 = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        ResponseEntity<RoomWaitTestData> roomWaitTestDataResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, RoomWaitTestData.class);
+        System.out.println("room/wait:" + roomWaitTestDataResponseEntity.getBody());
+        System.out.println("room/wait:" + roomWaitTestDataResponseEntity.getStatusCodeValue());
+        System.out.println("room/wait:" + roomWaitTestDataResponseEntity.getBody().getNumberOfWaitUser() + ":" + roomWaitTestDataResponseEntity.getBody().isStart());
+        System.out.println("room/wait 1 :" + roomWaitTestDataResponseEntity1.toString());
 
         // ルーム退出
-        url = "http//localhost:8080/room/" + roomId + "/exit";
+        url = "http://localhost:8080/room/" + roomId + "/exit";
+        ResponseEntity<String> roomExitTestDataResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        System.out.println("room/exit:" + roomExitTestDataResponseEntity.getBody());
 
         // ユーザログアウト
         url = "http://localhost:8080/logout";

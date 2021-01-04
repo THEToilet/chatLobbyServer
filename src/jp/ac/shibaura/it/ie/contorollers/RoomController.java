@@ -8,6 +8,8 @@ import jp.ac.shibaura.it.ie.usecases.room.exit.RoomExitInputData;
 import jp.ac.shibaura.it.ie.usecases.room.wait.RoomWaitInputData;
 import jp.ac.shibaura.it.ie.usecases.session.SessionInputData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jp.ac.shibaura.it.ie.usecases.core.OutputData;
 
@@ -28,20 +30,23 @@ public class RoomController {
 
 
     @RequestMapping(value = "/{roomId}/exit", method = RequestMethod.GET)
-    public OutputData roomExit(@RequestHeader("session") String session,  @PathVariable("roomId") String roomId) {
-        if(!sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
-            logger.info("fdf");
-            throw  new RuntimeException();
+    public ResponseEntity<String> roomExit(@RequestHeader("session") String session, @PathVariable("roomId") String roomId) {
+        if (!sessionInteractor.handle(new SessionInputData(session)).isSuccess()) {
+            logger.warn("認証エラー");
+            throw new RuntimeException();
         }
-        return roomExitInteractor.handle(new RoomExitInputData(session, roomId));
+        logger.info("room/exit:" + roomId);
+        roomExitInteractor.handle(new RoomExitInputData(session, roomId));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{roomId}/wait", method = RequestMethod.GET)
     public OutputData roomWait(@RequestHeader("session") String session, @PathVariable("roomId") String roomId) {
-        if(!sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
-            logger.info("fdf");
-            throw  new RuntimeException();
+        if (!sessionInteractor.handle(new SessionInputData(session)).isSuccess()) {
+            logger.warn("認証エラー");
+            throw new RuntimeException();
         }
+        logger.info("room/wait:" + roomId);
         return roomWaitInteractor.handle(new RoomWaitInputData(session, roomId));
     }
 }

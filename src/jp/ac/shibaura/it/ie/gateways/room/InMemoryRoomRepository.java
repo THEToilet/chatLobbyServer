@@ -11,7 +11,7 @@ import java.util.*;
 @Component
 @Repository
 public class InMemoryRoomRepository implements RoomRepository {
-    private HashMap<String, Room> rooms = new HashMap<>();
+    private Map<String, Room> rooms = new LinkedHashMap<>();
 
     @Override
     public void save(Room room) {
@@ -25,21 +25,22 @@ public class InMemoryRoomRepository implements RoomRepository {
 
     @Override
     public Optional<Room> find(String roomId) {
-        return Optional.of(rooms.get(roomId));
+        return Optional.ofNullable(rooms.get(roomId));
     }
 
     @Override
-    public List<Room> findAll(String categoeyId) {
-        List<Room> tmpRooms = new ArrayList<>();
-        for (Iterator<String> iterator = rooms.keySet().iterator(); iterator.hasNext(); ) {
-            String key = iterator.next();
-            System.out.println(key + " => " + rooms.get(key));
-            Room room = rooms.get(key);
-            if (room.getCategoryId() == categoeyId) {
-                tmpRooms.add(room);
+    public List<Room> findAll(String categoryId) {
+        List<Room> roomList = new ArrayList<>();
+        System.out.println("roomの数は？？？？" + rooms.size());
+        rooms.forEach((roomId, room) -> {
+            System.out.println("InMemoryRoomRepository:" + categoryId + "::::" + room.getCategoryId());
+            if(room.getCategoryId().equals(categoryId)){
+                System.out.println("追加しました");
+                roomList.add(room);
             }
-        }
-        return tmpRooms;
+        });
+        System.out.println("InmemoryRoomRepository roomlist.size:" + roomList.size());
+        return roomList;
 
     }
 

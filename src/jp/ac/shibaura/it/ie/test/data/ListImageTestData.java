@@ -1,4 +1,4 @@
-package jp.ac.shibaura.it.ie.test;
+package jp.ac.shibaura.it.ie.test.data;
 
 import jp.ac.shibaura.it.ie.domain.model.image.Image;
 

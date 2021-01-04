@@ -5,6 +5,7 @@ import jp.ac.shibaura.it.ie.domain.model.room.Room;
 import jp.ac.shibaura.it.ie.domain.model.room.RoomRepository;
 import jp.ac.shibaura.it.ie.domain.model.session.SessionRepository;
 import jp.ac.shibaura.it.ie.domain.model.user.UserRepository;
+import jp.ac.shibaura.it.ie.log.LogUtils;
 import jp.ac.shibaura.it.ie.usecases.category.join.CategoryJoinInputData;
 import jp.ac.shibaura.it.ie.usecases.category.join.CategoryJoinOutputData;
 import jp.ac.shibaura.it.ie.usecases.category.join.CategoryJoinUseCase;
@@ -25,24 +26,32 @@ public class CategoryJoinInteractor implements CategoryJoinUseCase {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private LogUtils logger;
+
     @Override
     public CategoryJoinOutputData handle(CategoryJoinInputData inputData) {
         String uuid;
+        logger.info("categoryIdは" + inputData.getCategoryId() + "デス");
         List<Room> rooms = roomRepository.findAll(inputData.getCategoryId());
+        logger.info("Roomの数は:" + rooms.size());
         // ルームが存在する場合
         if (rooms.size() > 0) {
             // カテゴリーのユーザ数でソート
             Collections.sort(rooms, Comparator.comparing(room -> room.getNumberOfUser()));
             Room room = rooms.get(rooms.size() - 1);
             room.joinRoom(inputData.getSession());
+            // ここでルームにいる人数が4人だったらパスする
             uuid = room.getRoomId();
         }
         // ルームが存在しない場合
         else {
+            logger.info("Roomを新しく作ります");
             uuid = UUID.randomUUID().toString();
             Room room = new Room(uuid, inputData.getCategoryId());
             room.joinRoom(inputData.getSession());
             roomRepository.save(room);
+            logger.info("現在のRoom数は" +roomRepository.find(uuid).get().getCategoryId());
         }
 
         return new CategoryJoinOutputData(uuid);
