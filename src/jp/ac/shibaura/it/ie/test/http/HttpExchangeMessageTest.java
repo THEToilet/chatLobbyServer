@@ -2,10 +2,8 @@ package jp.ac.shibaura.it.ie.test.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jp.ac.shibaura.it.ie.test.data.ImagePostTestData;
-import jp.ac.shibaura.it.ie.test.data.ImageTestData;
-import jp.ac.shibaura.it.ie.test.data.LoginTestData;
-import jp.ac.shibaura.it.ie.test.data.RoomWaitTestData;
+import jdk.internal.org.objectweb.asm.TypeReference;
+import jp.ac.shibaura.it.ie.test.data.*;
 import jp.ac.shibaura.it.ie.test.interactor.AuthTest;
 import jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginOutputData;
 import org.junit.After;
@@ -13,9 +11,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.*;
 
@@ -73,7 +76,7 @@ public class HttpExchangeMessageTest {
     }
 
     /**
-     *  メッセージの送受信をする
+     * メッセージの送受信をする、あとスタンプもおす
      */
     @Test
     public void testExchangeMessage() {
@@ -91,17 +94,55 @@ public class HttpExchangeMessageTest {
                 e.printStackTrace();
             }
             HttpEntity<String> newEntity = new HttpEntity<String>(reqBodyData, headers);
-           // HttpEntity<String> roomStart =  restTemplate.postForEntity(url, new ImagePostTestData(ImageTestData.image, "unko", "png"), String.class);
-            HttpEntity<String> roomStart =  restTemplate.postForEntity(url, newEntity, String.class);
+            // HttpEntity<String> roomStart =  restTemplate.postForEntity(url, new ImagePostTestData(ImageTestData.image, "unko", "png"), String.class);
+            HttpEntity<String> roomStart = restTemplate.postForEntity(url, newEntity, String.class);
             System.out.println("message/post:" + roomStart.toString());
+            HttpEntity<String> roomStart1 = restTemplate.postForEntity(url, newEntity, String.class);
+            System.out.println("message/post:" + roomStart1.toString());
 
 
-            HttpEntity<String> entity = new HttpEntity<>(headers);
-            // メッセージ送信API
+            // メッセージ受信API
             url = "http://localhost:8081/chat/" + roomId + "/message/update";
-            ResponseEntity<String> categoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-            System.out.println("message/update:" + categoryJoinResponseEntity.toString());
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+            // ResponseEntity<Map<String, MessageTest>> categoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, new ParameterizedTypeReference<Map<String, MessageTest>>() {});
+            ResponseEntity<MessageMap> categoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, new ParameterizedTypeReference<MessageMap>() {
+            });
+            //ResponseEntity<String> categoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            System.out.println("message/update: " + categoryJoinResponseEntity.toString());
+            System.out.println("message/update: " + categoryJoinResponseEntity.getBody());
+
+
+            categoryJoinResponseEntity.getBody().getMessageList().forEach((k, v) -> {
+                System.out.println("messageIdは : " + k);
+                System.out.println("messageIdは : " + v.getMessageId());
+
+                // スタンプ送信API
+                url = "http://localhost:8081/chat/" + roomId + "/" + k + "/stamp/post";
+                String request = null;
+                try {
+                    request = new ObjectMapper().writeValueAsString(new StampPostTestData("imanaka", "2"));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                HttpEntity<String> superEntity = new HttpEntity<String>(request, headers);
+                // HttpEntity<String> roomStart =  restTemplate.postForEntity(url, new ImagePostTestData(ImageTestData.image, "unko", "png"), String.class);
+                HttpEntity<String> messageUpdateEntity = restTemplate.postForEntity(url, superEntity, String.class);
+                System.out.println("message/post:" + messageUpdateEntity.toString());
+                HttpEntity<String> messageUpdateEntity1 = restTemplate.postForEntity(url, superEntity, String.class);
+                System.out.println("message/post:" + messageUpdateEntity1.toString());
+                HttpEntity<String> messageUpdateEntity2 = restTemplate.postForEntity(url, superEntity, String.class);
+                System.out.println("message/post:" + messageUpdateEntity2.toString());
+
+                // もう一回取得
+                url = "http://localhost:8081/chat/" + roomId + "/message/update";
+                ResponseEntity<String> SuperCategoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+                System.out.println("Super message/update: " + SuperCategoryJoinResponseEntity.toString());
+                System.out.println("Super message/update: " + SuperCategoryJoinResponseEntity.getBody());
+
+            });
+
         });
+
 
     }
 
@@ -111,6 +152,19 @@ public class HttpExchangeMessageTest {
      */
     @After
     public void testLogout() {
+
+        // みんなで部屋をでる 退出API
+        sessions.forEach(s -> {
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("session", s);
+            url = "http://localhost:8081/chat/" + roomId + "/exit";
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+            ResponseEntity<String> chatExitResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            System.out.println("message/update: " + chatExitResponseEntity.toString());
+        });
+
+
         url = "http://localhost:8080/logout";
         sessions.forEach(s -> {
             HttpHeaders headers = new HttpHeaders();
