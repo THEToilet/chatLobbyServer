@@ -49,7 +49,7 @@ public class AuthController {
     @RequestMapping(value = "/entry", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> entry(@RequestBody AuthEntryInputData inputData) {
-        logger.info(inputData.getId()+inputData.getName()+inputData.getPassword());
+        logger.info("entry" + inputData.getId()+inputData.getName()+inputData.getPassword());
         logger.info(inputData.toString());
         authEntryInteractor.handle(inputData);
         return new ResponseEntity<>(HttpStatus.OK);

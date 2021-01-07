@@ -60,7 +60,7 @@ public class RoomWaitInteractor implements RoomWaitUseCase {
                 userDataList.add(roomStartUserData);
             });
 
-            RoomStartOutputData roomStartOutputData = new RoomStartOutputData(userDataList, inputData.getRoomId());
+            RoomStartOutputData roomStartOutputData = new RoomStartOutputData(userDataList, room.get().getCategoryId());
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<String> roomStart =  restTemplate.postForEntity("http://localhost:8081/room/" + inputData.getRoomId() + "/start", roomStartOutputData, String.class);
             logger.info("RoomStart://" + roomStart);
