@@ -15,6 +15,7 @@ title __ROOM's Class Diagram__\n
           + getMaxNumberOfUser()
           + getNumberOfUser()
           + getRoomId()
+          + getUsers()
           + joinRoom()
       }
     }

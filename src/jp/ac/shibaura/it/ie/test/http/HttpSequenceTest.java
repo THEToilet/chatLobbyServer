@@ -1,11 +1,8 @@
 package jp.ac.shibaura.it.ie.test.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jp.ac.shibaura.it.ie.test.data.*;
 import jp.ac.shibaura.it.ie.test.interactor.AuthTest;
-import jp.ac.shibaura.it.ie.test.data.CategoryListTestData;
-import jp.ac.shibaura.it.ie.test.data.ListImageTestData;
-import jp.ac.shibaura.it.ie.test.data.LoginTestData;
-import jp.ac.shibaura.it.ie.test.data.RoomWaitTestData;
 import jp.ac.shibaura.it.ie.usecases.auth.entry.AuthEntryInputData;
 import jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginOutputData;
 import org.junit.Test;
@@ -39,9 +36,10 @@ public class HttpSequenceTest {
         // ユーザログイン
         url = "http://localhost:8080/login";
         LoginTestData loginTestData = new LoginTestData(uuid, uuid);
-        ResponseEntity<AuthLoginOutputData> loginResponseEntity = restTemplate.postForEntity(url, loginTestData, AuthLoginOutputData.class);
+        ResponseEntity<AuthLoginOutputTestData> loginResponseEntity = restTemplate.postForEntity(url, loginTestData, AuthLoginOutputTestData.class);
         System.out.println(loginResponseEntity.toString());
         System.out.println("login::" + loginResponseEntity.getBody().getSession());
+        System.out.println("login::" + loginResponseEntity.getBody().getUserName());
         String session = loginResponseEntity.getBody().getSession();
 
         // header作成
@@ -62,15 +60,20 @@ public class HttpSequenceTest {
         System.out.println("user/update::" + userUpdateEntity.getStatusCodeValue());
 
         // 画像一覧表示
-        url = "http://localhost:8080/image/list?categoryId=test";
+        url = "http://localhost:8080/image/list?categoryId=1";
         HttpEntity<String> newEntiry = new HttpEntity<String>(headers);
-        ResponseEntity<ListImageTestData> imageListEntiry = restTemplate.exchange(url, HttpMethod.GET, newEntiry, ListImageTestData.class);
+        ResponseEntity<ListImageTestData> imageListEntiry = restTemplate.exchange(url, HttpMethod.GET, newEntiry, new ParameterizedTypeReference<ListImageTestData>() {
+        });
+        ResponseEntity<String> imageListEntiry1 = restTemplate.exchange(url, HttpMethod.GET, newEntiry, String.class);
         System.out.println("imageList::" + imageListEntiry.toString());
         System.out.println("imageList::" + imageListEntiry.getBody());
         System.out.println("imageList::" + imageListEntiry.getStatusCodeValue());
+        System.out.println("imageList::" + imageListEntiry.getStatusCodeValue());
+        System.out.println("imageList::" + imageListEntiry.getStatusCodeValue());
+        System.out.println("NeoimageList::" + imageListEntiry1.getBody().toString());
         ListImageTestData tempUrl = imageListEntiry.getBody();
-        for (int i = 0; i < tempUrl.images.size(); i++) {
-            System.out.println("imageのURLは:" + tempUrl.images.get(i).getImageUrl());
+        for (int i = 0; i < tempUrl.getUrls().size(); i++) {
+            System.out.println("imageのURLは:" + tempUrl.getUrls().get(i).getImageUrl());
         }
 
         // カテゴリ一覧表示

@@ -50,6 +50,7 @@ public class RoomWaitInteractor implements RoomWaitUseCase {
             logger.info("room/wait アプリケーション送信");
             // ここでroomを消してしまうと他の人がアクセスしたときにエラーがでる
             // これは一回だけ動かしたい
+            // TODO : 人が残るエラー削除する
             List<String> sessions = room.get().getUsers();
             List<RoomStartUserData> userDataList = new ArrayList<>();
             sessions.forEach(s -> {
@@ -63,6 +64,7 @@ public class RoomWaitInteractor implements RoomWaitUseCase {
             RoomStartOutputData roomStartOutputData = new RoomStartOutputData(userDataList, room.get().getCategoryId());
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<String> roomStart =  restTemplate.postForEntity("http://localhost:8081/room/" + inputData.getRoomId() + "/start", roomStartOutputData, String.class);
+            roomRepository.remove(room.get());
             logger.info("RoomStart://" + roomStart);
             sent.replace(inputData.getRoomId(), true);
         }

@@ -26,6 +26,7 @@ title __CONTOROLLERS's Class Diagram__\n
   namespace jp.ac.shibaura.it.ie {
     namespace contorollers {
       class jp.ac.shibaura.it.ie.contorollers.ImageContoroller {
+          + imageList()
       }
     }
   }
@@ -35,7 +36,6 @@ title __CONTOROLLERS's Class Diagram__\n
     namespace contorollers {
       class jp.ac.shibaura.it.ie.contorollers.RoomController {
           + roomExit()
-          + roomJoin()
           + roomWait()
       }
     }
@@ -60,9 +60,11 @@ title __CONTOROLLERS's Class Diagram__\n
   jp.ac.shibaura.it.ie.contorollers.CategoryContoroller o-- jp.ac.shibaura.it.ie.domain.application.category.CategoryListInteractor : categoryListInteractor
   jp.ac.shibaura.it.ie.contorollers.CategoryContoroller o-- jp.ac.shibaura.it.ie.log.LogUtils : logger
   jp.ac.shibaura.it.ie.contorollers.CategoryContoroller o-- jp.ac.shibaura.it.ie.domain.application.session.SessionInteractor : sessionInteractor
+  jp.ac.shibaura.it.ie.contorollers.ImageContoroller o-- jp.ac.shibaura.it.ie.domain.application.image.ImageListInteractor : imageListInteractor
+  jp.ac.shibaura.it.ie.contorollers.ImageContoroller o-- jp.ac.shibaura.it.ie.log.LogUtils : logger
+  jp.ac.shibaura.it.ie.contorollers.ImageContoroller o-- jp.ac.shibaura.it.ie.domain.application.session.SessionInteractor : sessionInteractor
   jp.ac.shibaura.it.ie.contorollers.RoomController o-- jp.ac.shibaura.it.ie.log.LogUtils : logger
   jp.ac.shibaura.it.ie.contorollers.RoomController o-- jp.ac.shibaura.it.ie.domain.application.room.RoomExitInteractor : roomExitInteractor
-  jp.ac.shibaura.it.ie.contorollers.RoomController o-- jp.ac.shibaura.it.ie.domain.application.room.RoomStartInteractor : roomStartInteractor
   jp.ac.shibaura.it.ie.contorollers.RoomController o-- jp.ac.shibaura.it.ie.domain.application.room.RoomWaitInteractor : roomWaitInteractor
   jp.ac.shibaura.it.ie.contorollers.RoomController o-- jp.ac.shibaura.it.ie.domain.application.session.SessionInteractor : sessionInteractor
   jp.ac.shibaura.it.ie.contorollers.UserController o-- jp.ac.shibaura.it.ie.domain.application.user.UserUpdateInteractor : userUpdateInteractor

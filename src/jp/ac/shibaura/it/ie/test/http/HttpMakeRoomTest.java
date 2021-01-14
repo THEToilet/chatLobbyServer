@@ -1,5 +1,6 @@
 package jp.ac.shibaura.it.ie.test.http;
 
+import jp.ac.shibaura.it.ie.test.data.AuthLoginOutputTestData;
 import jp.ac.shibaura.it.ie.test.data.LoginTestData;
 import jp.ac.shibaura.it.ie.test.data.RoomWaitTestData;
 import jp.ac.shibaura.it.ie.test.interactor.AuthTest;
@@ -42,7 +43,7 @@ public class HttpMakeRoomTest {
 
         users.forEach((userName, userPassword) -> {
             LoginTestData loginTestData = new LoginTestData(userName, userPassword);
-            ResponseEntity<AuthLoginOutputData> loginResponseEntity = restTemplate.postForEntity(url, loginTestData, AuthLoginOutputData.class);
+            ResponseEntity<AuthLoginOutputTestData> loginResponseEntity = restTemplate.postForEntity(url, loginTestData, AuthLoginOutputTestData.class);
             sessions.add(loginResponseEntity.getBody().getSession());
         });
 

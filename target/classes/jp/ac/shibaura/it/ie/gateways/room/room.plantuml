@@ -5,7 +5,7 @@ title __ROOM's Class Diagram__\n
   namespace jp.ac.shibaura.it.ie {
     namespace gateways.room {
       class jp.ac.shibaura.it.ie.gateways.room.InMemoryRoomRepository {
-          - rooms : HashMap<String, Room>
+          - rooms : Map<String, Room>
           + find()
           + findAll()
           + remove()

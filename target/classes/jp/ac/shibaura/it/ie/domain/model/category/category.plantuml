@@ -18,7 +18,6 @@ title __CATEGORY's Class Diagram__\n
   namespace jp.ac.shibaura.it.ie {
     namespace domain.model.category {
       interface jp.ac.shibaura.it.ie.domain.model.category.CategoryRepository {
-          {abstract} + delete()
           {abstract} + findAll()
           {abstract} + save()
       }

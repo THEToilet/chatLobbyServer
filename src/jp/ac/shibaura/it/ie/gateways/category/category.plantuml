@@ -5,7 +5,6 @@ title __CATEGORY's Class Diagram__\n
   namespace jp.ac.shibaura.it.ie {
     namespace gateways.category {
       class jp.ac.shibaura.it.ie.gateways.category.MySQLCategoryRepository {
-          + delete()
           + findAll()
           + save()
       }

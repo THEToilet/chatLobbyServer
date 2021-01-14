@@ -5,7 +5,9 @@ title __LIST's Class Diagram__\n
   namespace jp.ac.shibaura.it.ie {
     namespace usecases.category.list {
       class jp.ac.shibaura.it.ie.usecases.category.list.CategoryListInputData {
+          - session : String
           + CategoryListInputData()
+          + getSession()
       }
     }
   }

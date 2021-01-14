@@ -4,16 +4,18 @@ import jp.ac.shibaura.it.ie.usecases.core.OutputData;
 
 public class AuthLoginOutputData implements OutputData {
     private String session;
+    private String userName;
 
-    public AuthLoginOutputData(String session) {
+    public AuthLoginOutputData(String session, String userName) {
         this.session = session;
+        this.userName = userName;
     }
-
-    private AuthLoginOutputData() {
-    }
-
 
     public String getSession() {
         return session;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 }

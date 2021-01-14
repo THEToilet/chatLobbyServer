@@ -16,10 +16,7 @@ title __LOGOUT's Class Diagram__\n
   namespace jp.ac.shibaura.it.ie {
     namespace usecases.auth.logout {
       class jp.ac.shibaura.it.ie.usecases.auth.logout.AuthLogoutOutputData {
-          - success : boolean
           + AuthLogoutOutputData()
-          + isSuccess()
-          - AuthLogoutOutputData()
       }
     }
   }

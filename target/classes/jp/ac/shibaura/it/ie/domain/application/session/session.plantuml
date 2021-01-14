@@ -12,6 +12,7 @@ title __SESSION's Class Diagram__\n
   
 
   jp.ac.shibaura.it.ie.domain.application.session.SessionInteractor .up.|> jp.ac.shibaura.it.ie.usecases.session.SessionUseCase
+  jp.ac.shibaura.it.ie.domain.application.session.SessionInteractor o-- jp.ac.shibaura.it.ie.log.LogUtils : logger
   jp.ac.shibaura.it.ie.domain.application.session.SessionInteractor o-- jp.ac.shibaura.it.ie.domain.model.session.SessionRepository : sessionRepository
 
 

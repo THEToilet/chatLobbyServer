@@ -21,11 +21,13 @@ title __CATEGORY's Class Diagram__\n
   
 
   jp.ac.shibaura.it.ie.domain.application.category.CategoryJoinInteractor .up.|> jp.ac.shibaura.it.ie.usecases.category.join.CategoryJoinUseCase
+  jp.ac.shibaura.it.ie.domain.application.category.CategoryJoinInteractor o-- jp.ac.shibaura.it.ie.log.LogUtils : logger
   jp.ac.shibaura.it.ie.domain.application.category.CategoryJoinInteractor o-- jp.ac.shibaura.it.ie.domain.model.room.RoomRepository : roomRepository
   jp.ac.shibaura.it.ie.domain.application.category.CategoryJoinInteractor o-- jp.ac.shibaura.it.ie.domain.model.session.SessionRepository : sessionRepository
   jp.ac.shibaura.it.ie.domain.application.category.CategoryJoinInteractor o-- jp.ac.shibaura.it.ie.domain.model.user.UserRepository : userRepository
   jp.ac.shibaura.it.ie.domain.application.category.CategoryListInteractor .up.|> jp.ac.shibaura.it.ie.usecases.category.list.CategoryListUseCase
   jp.ac.shibaura.it.ie.domain.application.category.CategoryListInteractor o-- jp.ac.shibaura.it.ie.domain.model.category.CategoryRepository : categoryRepository
+  jp.ac.shibaura.it.ie.domain.application.category.CategoryListInteractor o-- jp.ac.shibaura.it.ie.log.LogUtils : logger
 
 
 right footer

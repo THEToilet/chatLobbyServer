@@ -32,6 +32,7 @@ title __AUTH's Class Diagram__\n
   jp.ac.shibaura.it.ie.domain.application.auth.AuthEntryInteractor .up.|> jp.ac.shibaura.it.ie.usecases.auth.entry.AuthEntryUseCase
   jp.ac.shibaura.it.ie.domain.application.auth.AuthEntryInteractor o-- jp.ac.shibaura.it.ie.domain.model.user.UserRepository : userRepository
   jp.ac.shibaura.it.ie.domain.application.auth.AuthLoginInteractor .up.|> jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginUseCase
+  jp.ac.shibaura.it.ie.domain.application.auth.AuthLoginInteractor o-- jp.ac.shibaura.it.ie.log.LogUtils : logger
   jp.ac.shibaura.it.ie.domain.application.auth.AuthLoginInteractor o-- jp.ac.shibaura.it.ie.domain.model.session.SessionRepository : sessionRepository
   jp.ac.shibaura.it.ie.domain.application.auth.AuthLogoutInteractor .up.|> jp.ac.shibaura.it.ie.usecases.auth.logout.AuthLogoutUseCase
   jp.ac.shibaura.it.ie.domain.application.auth.AuthLogoutInteractor o-- jp.ac.shibaura.it.ie.domain.model.session.SessionRepository : sessionRepository

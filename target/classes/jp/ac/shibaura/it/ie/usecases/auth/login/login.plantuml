@@ -5,11 +5,11 @@ title __LOGIN's Class Diagram__\n
   namespace jp.ac.shibaura.it.ie {
     namespace usecases.auth.login {
       class jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginInputData {
-          - id : String
-          - password : String
+          - userId : String
+          - userPassword : String
           + AuthLoginInputData()
-          + getId()
-          + getPassword()
+          + getUserId()
+          + getUserPassword()
       }
     }
   }

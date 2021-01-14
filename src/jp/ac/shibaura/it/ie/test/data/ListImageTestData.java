@@ -6,5 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListImageTestData {
-    public List<Image> images = new ArrayList<>();
+    public List<ImageData> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(List<ImageData> urls) {
+        this.urls = urls;
+    }
+
+    private List<ImageData> urls= new ArrayList<>();
 }

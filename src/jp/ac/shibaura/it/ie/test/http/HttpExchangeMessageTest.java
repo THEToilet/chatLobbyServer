@@ -50,7 +50,7 @@ public class HttpExchangeMessageTest {
 
         users.forEach((userName, userPassword) -> {
             LoginTestData loginTestData = new LoginTestData(userName, userPassword);
-            ResponseEntity<AuthLoginOutputData> loginResponseEntity = restTemplate.postForEntity(url, loginTestData, AuthLoginOutputData.class);
+            ResponseEntity<AuthLoginOutputTestData> loginResponseEntity = restTemplate.postForEntity(url, loginTestData, AuthLoginOutputTestData.class);
             sessions.add(loginResponseEntity.getBody().getSession());
         });
 
