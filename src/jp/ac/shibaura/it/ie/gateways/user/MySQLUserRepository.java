@@ -53,8 +53,8 @@ public class MySQLUserRepository implements UserRepository {
     @Override
     public Optional<User> find(String userId) {
         MySQLComm comm = MySQLComm.getInstance();
-        //ResultSet rs = comm.sqlExecuteQuery(String.format("select * from user where id = '%s';", userId));
-        ResultSet rs = comm.sqlExecuteQuery("select * from user where id = 22;");
+        ResultSet rs = comm.sqlExecuteQuery(String.format("select * from user where id = '%s';", userId));
+        //ResultSet rs = comm.sqlExecuteQuery("select * from user where id = 22;");
         User user = null;
         try {
             while (rs.next()) {

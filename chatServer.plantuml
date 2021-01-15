@@ -290,6 +290,14 @@ title __CHATSERVER's Class Diagram__\n
 
   namespace jp.ac.shibaura.it.ie {
     namespace test.data {
+      class jp.ac.shibaura.it.ie.test.data.AuthLoginOutputTestData {
+      }
+    }
+  }
+  
+
+  namespace jp.ac.shibaura.it.ie {
+    namespace test.data {
       class jp.ac.shibaura.it.ie.test.data.CategoryData {
       }
     }
@@ -299,6 +307,14 @@ title __CHATSERVER's Class Diagram__\n
   namespace jp.ac.shibaura.it.ie {
     namespace test.data {
       class jp.ac.shibaura.it.ie.test.data.CategoryListTestData {
+      }
+    }
+  }
+  
+
+  namespace jp.ac.shibaura.it.ie {
+    namespace test.data {
+      class jp.ac.shibaura.it.ie.test.data.ImageData {
       }
     }
   }
@@ -744,6 +760,7 @@ title __CHATSERVER's Class Diagram__\n
   jp.ac.shibaura.it.ie.domain.application.auth.AuthLoginInteractor .up.|> jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginUseCase
   jp.ac.shibaura.it.ie.domain.application.auth.AuthLoginInteractor o-- jp.ac.shibaura.it.ie.log.LogUtils : logger
   jp.ac.shibaura.it.ie.domain.application.auth.AuthLoginInteractor o-- jp.ac.shibaura.it.ie.domain.model.session.SessionRepository : sessionRepository
+  jp.ac.shibaura.it.ie.domain.application.auth.AuthLoginInteractor o-- jp.ac.shibaura.it.ie.domain.model.user.UserRepository : userRepository
   jp.ac.shibaura.it.ie.domain.application.auth.AuthLogoutInteractor .up.|> jp.ac.shibaura.it.ie.usecases.auth.logout.AuthLogoutUseCase
   jp.ac.shibaura.it.ie.domain.application.auth.AuthLogoutInteractor o-- jp.ac.shibaura.it.ie.domain.model.session.SessionRepository : sessionRepository
   jp.ac.shibaura.it.ie.domain.application.category.CategoryJoinInteractor .up.|> jp.ac.shibaura.it.ie.usecases.category.join.CategoryJoinUseCase

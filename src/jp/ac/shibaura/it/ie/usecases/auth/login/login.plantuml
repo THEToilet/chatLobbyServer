@@ -19,9 +19,10 @@ title __LOGIN's Class Diagram__\n
     namespace usecases.auth.login {
       class jp.ac.shibaura.it.ie.usecases.auth.login.AuthLoginOutputData {
           - session : String
+          - userName : String
           + AuthLoginOutputData()
           + getSession()
-          - AuthLoginOutputData()
+          + getUserName()
       }
     }
   }

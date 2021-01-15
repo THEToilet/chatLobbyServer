@@ -4,6 +4,20 @@ title __DATA's Class Diagram__\n
 
   namespace jp.ac.shibaura.it.ie {
     namespace test.data {
+      class jp.ac.shibaura.it.ie.test.data.AuthLoginOutputTestData {
+          - session : String
+          - userName : String
+          + getSession()
+          + getUserName()
+          + setSession()
+          + setUserName()
+      }
+    }
+  }
+  
+
+  namespace jp.ac.shibaura.it.ie {
+    namespace test.data {
       class jp.ac.shibaura.it.ie.test.data.CategoryData {
           - categoryId : int
           - categoryName : String
@@ -22,6 +36,20 @@ title __DATA's Class Diagram__\n
           - categoryList : List<CategoryData>
           + getCategoryList()
           + setCategoryList()
+      }
+    }
+  }
+  
+
+  namespace jp.ac.shibaura.it.ie {
+    namespace test.data {
+      class jp.ac.shibaura.it.ie.test.data.ImageData {
+          - fileExtension : String
+          - fileName : String
+          - imageUrl : String
+          + getFileExtension()
+          + getFileName()
+          + getImageUrl()
       }
     }
   }
@@ -58,7 +86,9 @@ title __DATA's Class Diagram__\n
   namespace jp.ac.shibaura.it.ie {
     namespace test.data {
       class jp.ac.shibaura.it.ie.test.data.ListImageTestData {
-          + images : List<Image>
+          - urls : List<ImageData>
+          + getUrls()
+          + setUrls()
       }
     }
   }
