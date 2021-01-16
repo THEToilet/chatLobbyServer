@@ -35,6 +35,9 @@ public class AuthLoginInteractor implements AuthLoginUseCase {
         if(!userOptional.isPresent()){
             throw new RuntimeException();
         }
+        if(!userOptional.get().getId().getValue().equals(inputData.getUserId()) || !userOptional.get().getPass().getValue().equals(inputData.getUserPassword())){
+            throw new RuntimeException();
+        }
         sessionRepository.save(uuid, inputData.getUserId());
         return new AuthLoginOutputData(uuid, userOptional.get().getName().getValue());
     }

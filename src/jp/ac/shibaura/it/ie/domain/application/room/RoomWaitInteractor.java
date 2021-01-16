@@ -37,13 +37,17 @@ public class RoomWaitInteractor implements RoomWaitUseCase {
     @Override
     public RoomWaitOutputData handle(RoomWaitInputData inputData) {
         if (!Optional.ofNullable(sent.get(inputData.getRoomId())).isPresent()) {
-            sent.put(inputData.getRoomId(), false) ;
+            sent.put(inputData.getRoomId(), false);
         }
-        Optional<Room> room = roomRepository.find(inputData.getRoomId());
-        logger.info("room/wait : interactor" + room.get().getRoomId());
-        logger.info("room/wait : interactor" + room.get().getNumberOfUser());
+        Optional<Room> optionalRoom = roomRepository.find(inputData.getRoomId());
+        if (!optionalRoom.isPresent()) {
+            throw new RuntimeException();
+        }
+        Room room = optionalRoom.get();
+        logger.info("room/wait : interactor" + room.getRoomId());
+        logger.info("room/wait : interactor" + room.getNumberOfUser());
         // ここで人数が揃ったらアプリケーションサーバに飛ばす処理を書く
-        boolean start = room.get().getNumberOfUser() == room.get().getMaxNumberOfUser();
+        boolean start = (room.getNumberOfUser() == room.getMaxNumberOfUser());
         // 4人揃ったらアプリケーションサーバに送信
         // だけど4人がこれにアクセスすると4回送ることになるからどうにか遷都
         if (start && !sent.get(inputData.getRoomId())) {
@@ -51,24 +55,27 @@ public class RoomWaitInteractor implements RoomWaitUseCase {
             // ここでroomを消してしまうと他の人がアクセスしたときにエラーがでる
             // これは一回だけ動かしたい
             // TODO : 人が残るエラー削除する
-            List<String> sessions = room.get().getUsers();
+            List<String> sessions = room.getUsers();
             List<RoomStartUserData> userDataList = new ArrayList<>();
-            sessions.forEach(s -> {
-                Optional<String> userId = sessionRepository.find(s);
+            for (int i = 0; i < 4; i++) {
+                Optional<String> userId = sessionRepository.find(sessions.get(i));
                 logger.info("room/Wait userId is " + userId.get());
-                Optional<User> user = userRepository.find(userId.get());
-                RoomStartUserData roomStartUserData = new RoomStartUserData(userId.get(), user.get().getName().getValue(), s);
+                Optional<User> optionalUser = userRepository.find(userId.get());
+                if (!optionalUser.isPresent()) {
+                    throw new RuntimeException();
+                }
+                RoomStartUserData roomStartUserData = new RoomStartUserData(userId.get(), optionalUser.get().getName().getValue(), sessions.get(i));
                 userDataList.add(roomStartUserData);
-            });
+            }
 
-            RoomStartOutputData roomStartOutputData = new RoomStartOutputData(userDataList, room.get().getCategoryId());
+            RoomStartOutputData roomStartOutputData = new RoomStartOutputData(userDataList, room.getCategoryId());
             RestTemplate restTemplate = new RestTemplate();
-            HttpEntity<String> roomStart =  restTemplate.postForEntity("http://localhost:8081/room/" + inputData.getRoomId() + "/start", roomStartOutputData, String.class);
-            roomRepository.remove(room.get());
+            HttpEntity<String> roomStart = restTemplate.postForEntity("http://localhost:8081/room/" + inputData.getRoomId() + "/start", roomStartOutputData, String.class);
+            //roomRepository.remove(room.get());
             logger.info("RoomStart://" + roomStart);
             sent.replace(inputData.getRoomId(), true);
         }
 
-        return new RoomWaitOutputData(room.get().getNumberOfUser(), sent.get(inputData.getRoomId()));
+        return new RoomWaitOutputData(room.getNumberOfUser(), sent.get(inputData.getRoomId()));
     }
 }
