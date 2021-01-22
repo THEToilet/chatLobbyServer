@@ -48,7 +48,7 @@ public class AuthController {
 
     @RequestMapping(value = "/entry", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> entry(@RequestBody AuthEntryInputData inputData) {
+    public ResponseEntity entry(@RequestBody AuthEntryInputData inputData) {
         logger.info("entry" + inputData.getId()+inputData.getName()+inputData.getPassword());
         logger.info(inputData.toString());
         authEntryInteractor.handle(inputData);
@@ -57,7 +57,7 @@ public class AuthController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> logout(@RequestHeader("session") String session) {
+    public ResponseEntity logout(@RequestHeader("session") String session) {
         if(!sessionInteractor.handle(new SessionInputData(session)).isSuccess()){
             logger.warn("認証エラー");
             throw new RuntimeException();

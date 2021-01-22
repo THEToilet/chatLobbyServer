@@ -26,7 +26,7 @@ public class UserController {
     private LogUtils logger;
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseEntity<String> userUpdate(@RequestHeader("session") String session, @RequestBody UserUpdateInputData inputDate) {
+    public ResponseEntity userUpdate(@RequestHeader("session") String session, @RequestBody UserUpdateInputData inputDate) {
         if (!sessionInteractor.handle(new SessionInputData(session)).isSuccess()) {
             logger.warn("認証エラー");
             throw new RuntimeException();

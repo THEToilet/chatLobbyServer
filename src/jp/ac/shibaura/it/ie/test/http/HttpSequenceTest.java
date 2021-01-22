@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -28,18 +30,33 @@ public class HttpSequenceTest {
 
         // ユーザエントリ
         String uuid = UUID.randomUUID().toString();
-        AuthEntryInputData inputData = new AuthEntryInputData(uuid, uuid, uuid);
+        //AuthEntryInputData inputData = new AuthEntryInputData(uuid, uuid, uuid);
+        AuthEntryInputData inputData = new AuthEntryInputData("unko", "unko", "unko");
         String url = "http://localhost:8080/entry";
-        ResponseEntity<String> response = restTemplate.postForEntity(url, inputData, String.class);
-        System.out.println("entry::" + response.getStatusCodeValue());
+        try {
+            ResponseEntity<String> response = restTemplate.postForEntity(url, inputData, String.class);
+            System.out.println("entry::" + response.getStatusCodeValue());
+        } catch (
+                HttpClientErrorException e) {
+            e.printStackTrace();
+            System.out.println("400");
+        } catch (
+                HttpServerErrorException e) {
+            e.printStackTrace();
+            System.out.println("500");
+        }
 
         // ユーザログイン
         url = "http://localhost:8080/login";
         LoginTestData loginTestData = new LoginTestData(uuid, uuid);
         ResponseEntity<AuthLoginOutputTestData> loginResponseEntity = restTemplate.postForEntity(url, loginTestData, AuthLoginOutputTestData.class);
         System.out.println(loginResponseEntity.toString());
-        System.out.println("login::" + loginResponseEntity.getBody().getSession());
-        System.out.println("login::" + loginResponseEntity.getBody().getUserName());
+        System.out.println("login::" + loginResponseEntity.getBody().
+
+                getSession());
+        System.out.println("login::" + loginResponseEntity.getBody().
+
+                getUserName());
         String session = loginResponseEntity.getBody().getSession();
 
         // header作成
@@ -70,9 +87,16 @@ public class HttpSequenceTest {
         System.out.println("imageList::" + imageListEntiry.getStatusCodeValue());
         System.out.println("imageList::" + imageListEntiry.getStatusCodeValue());
         System.out.println("imageList::" + imageListEntiry.getStatusCodeValue());
-        System.out.println("NeoimageList::" + imageListEntiry1.getBody().toString());
+        System.out.println("NeoimageList::" + imageListEntiry1.getBody().
+
+                toString());
         ListImageTestData tempUrl = imageListEntiry.getBody();
-        for (int i = 0; i < tempUrl.getUrls().size(); i++) {
+        for (
+                int i = 0; i < tempUrl.getUrls().
+
+                size();
+
+                i++) {
             System.out.println("imageのURLは:" + tempUrl.getUrls().get(i).getImageUrl());
         }
 
@@ -85,8 +109,19 @@ public class HttpSequenceTest {
         System.out.println("categoryList::" + categoryListEntry.toString());
         System.out.println("categoryList::" + categoryListEntry.getBody());
         System.out.println("categoryList::" + categoryListEntry.getStatusCodeValue());
-        System.out.println(categoryListEntry.getBody().getCategoryList().size());
-        for (int i = 0; i < categoryListEntry.getBody().getCategoryList().size(); i++) {
+        System.out.println(categoryListEntry.getBody().
+
+                getCategoryList().
+
+                size());
+        for (
+                int i = 0; i < categoryListEntry.getBody().
+
+                getCategoryList().
+
+                size();
+
+                i++) {
             System.out.println("categoryの情報は:" + categoryListEntry.getBody().getCategoryList().get(i).getCategoryId() + ":" + categoryListEntry.getBody().getCategoryList().get(i).getCategoryName());
         }
 
@@ -94,7 +129,9 @@ public class HttpSequenceTest {
         url = "http://localhost:8080/category/1/join";
         ResponseEntity<AuthTest.CategoryJoinTestData> categoryJoinResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, AuthTest.CategoryJoinTestData.class);
         System.out.println("categoryJoin::" + categoryJoinResponseEntity.toString());
-        System.out.println("categoryJoin::" + categoryJoinResponseEntity.getBody().getRoomId());
+        System.out.println("categoryJoin::" + categoryJoinResponseEntity.getBody().
+
+                getRoomId());
         String roomId = categoryJoinResponseEntity.getBody().getRoomId();
 
         // ルーム待機
@@ -103,7 +140,11 @@ public class HttpSequenceTest {
         ResponseEntity<RoomWaitTestData> roomWaitTestDataResponseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, RoomWaitTestData.class);
         System.out.println("room/wait:" + roomWaitTestDataResponseEntity.getBody());
         System.out.println("room/wait:" + roomWaitTestDataResponseEntity.getStatusCodeValue());
-        System.out.println("room/wait:" + roomWaitTestDataResponseEntity.getBody().getNumberOfWaitUser() + ":" + roomWaitTestDataResponseEntity.getBody().isStart());
+        System.out.println("room/wait:" + roomWaitTestDataResponseEntity.getBody().
+
+                getNumberOfWaitUser() + ":" + roomWaitTestDataResponseEntity.getBody().
+
+                isStart());
         System.out.println("room/wait 1 :" + roomWaitTestDataResponseEntity1.toString());
 
         // ルーム退出

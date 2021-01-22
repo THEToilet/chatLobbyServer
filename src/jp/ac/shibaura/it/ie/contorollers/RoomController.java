@@ -30,7 +30,7 @@ public class RoomController {
 
 
     @RequestMapping(value = "/{roomId}/exit", method = RequestMethod.GET)
-    public ResponseEntity<String> roomExit(@RequestHeader("session") String session, @PathVariable("roomId") String roomId) {
+    public ResponseEntity roomExit(@RequestHeader("session") String session, @PathVariable("roomId") String roomId) {
         if (!sessionInteractor.handle(new SessionInputData(session)).isSuccess()) {
             logger.warn("認証エラー");
             throw new RuntimeException();
